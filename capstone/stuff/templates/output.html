@@ -7,7 +7,7 @@
 
 <h1>Server stuff</h1>
 <p>{{ output }}</p>
-<img src="{% static 'point_cloud_plot.png' %}" alt="3D Point Cloud Plot" style="width: 400px; height: auto;"/>
+<img src="{% static 'point_cloud_plot.png' %}?v={{ output }" alt="3D Point Cloud Plot" style="width: 400px; height: auto;"/>
 <p> </p>
 
 <button id="startButton">Start</button>

@@ -39,7 +39,7 @@ def downloaded_file(request):
         print("Error:", response.json())
     img_file = plot_points()
 
-    output = img_file
+    output = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     context = {
         'output': output,
     }
