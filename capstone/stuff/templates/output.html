@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+</head>
+<body>
+
+<h1>Server stuff</h1>
+<p>{{ output }}</p>
+<img src="{% static 'point_cloud_plot.png' %}" alt="3D Point Cloud Plot" style="width: 400px; height: auto;"/>
+<p> </p>
+
+<button id="startButton">Start</button>
+<p id="responseMessage"></p> <!-- To display any response -->
+
+<script>
+document.getElementById("startButton").addEventListener("click", function() {
+    fetch('/stuff/start-button/', {  // URL of the Django view
+        method: 'GET',
+    })
+    .then(response => response.json()) // Expect JSON response
+    .then(data => {
+        document.getElementById("responseMessage").innerText = data.message; // Show response
+    })
+    .catch(error => console.error('Error:', error));
+});
+</script>
+
+<button id="stopButton">Stop</button>
+<p id="responseMessage2"></p> <!-- To display any response -->
+
+<script>
+document.getElementById("stopButton").addEventListener("click", function() {
+    fetch('/stuff/stop-button/', {  // URL of the Django view
+        method: 'GET',
+    })
+    .then(response => response.json()) // Expect JSON response
+    .then(data => {
+        document.getElementById("responseMessage2").innerText = data.message; // Show response
+    })
+    .catch(error => console.error('Error:', error));
+});
+</script>
+
+</body>
+</html>

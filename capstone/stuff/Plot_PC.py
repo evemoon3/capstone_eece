@@ -70,7 +70,7 @@ def plot_points():
     ax.set_title('3D Point Cloud Plot')
 
     # Save the figure instead of showing it
-    output_filename = "point_cloud_plot.png"
+    output_filename = "static/point_cloud_plot.png"
     plt.savefig(output_filename, dpi=300, bbox_inches='tight')  # Save as high-quality PNG
 
     return output_filename
