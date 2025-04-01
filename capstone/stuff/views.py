@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.template import loader
 import requests
 
-server_start = "18.222.229.45"
+server_start = "3.19.77.133"
 
 
 def indexView(request):
@@ -176,3 +176,28 @@ def stop_button(request):
     response = requests.post(server_url, json={"start": False})
     print("Recieved: ", response.json())
     return JsonResponse({"message": datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
+
+
+def new_img(request):
+    url = f"http://{server_start}:80/download/point_cloud.txt"
+    response = requests.get(url)
+    print(response.status_code)
+
+    if response.status_code == 200:
+        with open("downloaded_file.txt", "wb") as f:
+            f.write(response.content)
+        print("File downloaded successfully!")
+    else:
+        print("Error:", response.json())
+    img_file = plot_points()
+    return JsonResponse({"message": datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
+
+
+
+def video_stream(request):
+    template = loader.get_template('video_stuff.html')
+    url = "http://<YOUR_FLASK_SERVER_IP>:5000/video_feed"
+    context = {
+        'output': server_start,
+    }
+    return HttpResponse(template.render(context, request))
