@@ -170,9 +170,26 @@ def start_button(request):
     print("Recieved: ", response.json())
     return JsonResponse({"message": datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
 
+
 def stop_button(request):
     print("SENDING STOP REQ")
     server_url = f"http://{server_start}:80/set_start"
+    response = requests.post(server_url, json={"start": False})
+    print("Recieved: ", response.json())
+    return JsonResponse({"message": datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
+
+
+def start_video_button(request):
+    print("SENDING START VIDEO REQ")
+    server_url = f"http://{server_start}:80/set_start_video"
+    response = requests.post(server_url, json={"start": True})
+    print("Recieved: ", response.json())
+    return JsonResponse({"message": datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
+
+
+def stop_video_button(request):
+    print("SENDING STOP VIDEO REQ")
+    server_url = f"http://{server_start}:80/set_start_video"
     response = requests.post(server_url, json={"start": False})
     print("Recieved: ", response.json())
     return JsonResponse({"message": datetime.now().strftime('%Y-%m-%d %H:%M:%S')})

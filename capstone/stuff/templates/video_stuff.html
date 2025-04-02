@@ -4,5 +4,33 @@
 
 <h1>Video</h1>
 <img src="http://18.222.229.45:80/video_feed" width="848" height="480" />
+<p> </p>
+<button id="startButton2">Start</button>
+<p id="responseMessage3"></p> <!-- To display any response -->
+
+<button id="stopButton2">Stop</button>
+<p id="responseMessage4"></p> <!-- To display any response -->
+<script>
+document.getElementById("startButton2").addEventListener("click", function() {
+    fetch('/stuff/start-video-button/', {  // URL of the Django view
+        method: 'GET',
+    })
+    .then(response => response.json()) // Expect JSON response
+    .then(data => {
+        document.getElementById("responseMessage3").innerText = data.message; // Show response
+    })
+    .catch(error => console.error('Error:', error));
+});
+document.getElementById("stopButton2").addEventListener("click", function() {
+    fetch('/stuff/stop-video-button/', {  // URL of the Django view
+        method: 'GET',
+    })
+    .then(response => response.json()) // Expect JSON response
+    .then(data => {
+        document.getElementById("responseMessage4").innerText = data.message; // Show response
+    })
+    .catch(error => console.error('Error:', error));
+});
+</script>
 </body>
 </html>
