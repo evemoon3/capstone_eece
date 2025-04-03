@@ -65,7 +65,8 @@ document.getElementById("stopButton").addEventListener("click", function() {
     .catch(error => console.error('Error:', error));
 });
 </script>
-<img src="http://18.222.229.45:80/video_feed" width="848" height="480" />
+<p>Video</p>
+<img src="http://52.14.95.195:80/video_feed" width="848" height="480" />
 <p> </p>
 <button id="startButton2">Start</button>
 <p id="responseMessage3"></p> <!-- To display any response -->
@@ -91,6 +92,25 @@ document.getElementById("stopButton2").addEventListener("click", function() {
     .then(response => response.json()) // Expect JSON response
     .then(data => {
         document.getElementById("responseMessage4").innerText = data.message; // Show response
+    })
+    .catch(error => console.error('Error:', error));
+});
+</script>
+
+<p>Radar</p>
+<img id="radarImage" src="{% static 'radar_plot.png' %}?v={{ output }" alt="Radar Plot" style="width: 400px; height: auto;"/>
+<p> </p>
+
+<button id="refreshButton">Refresh Radar</button>
+<p id="responseMessageRadar"></p>
+<script>
+document.getElementById("refreshButton").addEventListener("click", function() {
+    fetch('/stuff/get-radar-img/', {  // URL of the Django view
+        method: 'GET',
+    })
+    .then(response => response.json()) // Expect JSON response
+    .then(data => {
+        document.getElementById("responseMessageRadar").innerText = data.message; // Show response
     })
     .catch(error => console.error('Error:', error));
 });

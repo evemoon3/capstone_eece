@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.template import loader
 import requests
 
-server_start = "3.19.77.133"
+server_start = "52.14.95.195"
 
 
 def indexView(request):
@@ -218,3 +218,17 @@ def video_stream(request):
         'output': server_start,
     }
     return HttpResponse(template.render(context, request))
+
+
+def radar_img(request):
+    url = f"http://{server_start}:80/download_img"
+    response = requests.get(url)
+    print(response.status_code)
+
+    if response.status_code == 200:
+        with open("./stuff/static/radar_plot.png", "wb") as f:
+            f.write(response.content)
+        print("Radar Img downloaded successfully!")
+    else:
+        print("Error:", response.json())
+    return JsonResponse({"message": datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
