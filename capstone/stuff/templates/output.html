@@ -66,7 +66,7 @@ document.getElementById("stopButton").addEventListener("click", function() {
 });
 </script>
 <p>Video</p>
-<img src="http://52.14.95.195:80/video_feed" width="848" height="480" />
+<img src="http://18.222.219.16:80/video_feed" width="848" height="480" />
 <p> </p>
 <button id="startButton2">Start</button>
 <p id="responseMessage3"></p> <!-- To display any response -->
@@ -98,12 +98,28 @@ document.getElementById("stopButton2").addEventListener("click", function() {
 </script>
 
 <p>Radar</p>
-<img id="radarImage" src="{% static 'radar_plot.png' %}?v={{ output }" alt="Radar Plot" style="width: 400px; height: auto;"/>
+<p></p>
+<img id="radarImage" src="{% static 'radar_plot.png' %}?v={{ output }}" alt="Radar Plot" style="width: 400px; height: auto;"/>
 <p> </p>
-
-<button id="refreshButton">Refresh Radar</button>
+<p>Room State: <span id="radarRoomState">Unknown</span></p>
+<button id="refreshRoomStateButton">Refresh Room State</button>
+<p> </p>
+<button id="refreshButton">Refresh Radar Image</button>
 <p id="responseMessageRadar"></p>
 <script>
+// refresh room state
+document.getElementById("refreshRoomStateButton").addEventListener("click", function() {
+    fetch('/stuff/get-radar-room-state/', {
+        method: 'GET',
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("radarRoomState").innerText = data.message ? "Human Detected" : "Empty";
+    })
+    .catch(error => console.error('Error:', error));
+});
+
+// refresh img
 document.getElementById("refreshButton").addEventListener("click", function() {
     fetch('/stuff/get-radar-img/', {  // URL of the Django view
         method: 'GET',

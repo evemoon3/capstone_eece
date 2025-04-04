@@ -12,4 +12,5 @@ urlpatterns = [
     path('stop-video-button/', views.stop_video_button, name='stop_video_button'),
     path('new-img/', views.new_img, name='new_img'),
     path('get-radar-img/', views.radar_img, name='get_radar_img'),
+    path('get-radar-room-state/', views.get_radar_room_state, name='get_radar_room_state'),
 ]

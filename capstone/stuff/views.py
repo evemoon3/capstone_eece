@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.template import loader
 import requests
 
-server_start = "52.14.95.195"
+server_start = "18.222.219.16"
 
 
 def indexView(request):
@@ -232,3 +232,10 @@ def radar_img(request):
     else:
         print("Error:", response.json())
     return JsonResponse({"message": datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
+
+def get_radar_room_state(request):
+    print("RADAR ROOM STATE")
+    server_url = f"http://{server_start}:80/is_radar_room"
+    response = requests.get(server_url)
+    print("Recieved: ", response.json())
+    return JsonResponse({"message": response.json()["radar"]})
