@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-tx20vjsec$ual46@u+&@z7f@-b%83w*ef+_&!)71*6xz)h273@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['capstone-eece.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
