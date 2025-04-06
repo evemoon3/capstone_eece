@@ -2,7 +2,7 @@
 <html>
 <head>
     {% load static %}
-  <title>Fire Sensor Server</title>
+  <title><b>Fire Sensor Server</b></title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -70,7 +70,7 @@
     }
 
     .radar-block img {
-      max-width: 400px;
+      max-width: 600px;
       border-radius: 8px;
       margin-bottom: 10px;
     }
@@ -78,6 +78,11 @@
     .status {
       font-style: italic;
       margin: 10px 0;
+    }
+
+    .status-label {
+      font-weight: bold;
+      margin-left: 10px;
     }
   </style>
 </head>
@@ -91,10 +96,16 @@
       <div class="section-title">Point Cloud</div>
       <img id="pointCloudImage" src="{% static 'point_cloud_plot.png' %}?v={{ output }}" alt="3D Point Cloud Plot" style="width: 400px; height: auto;"/>
       <div class="controls">
-        <button id="startButton">Start</button>
-        <button id="stopButton">Stop</button>
-        <p id="responseMessage"></p>
-        <p id="responseMessage2"></p>
+          <div style="margin-bottom: 10px;">
+            <button id="startButton">Start</button>
+            <span class="status-label">Last Start:</span>
+            <span id="responseMessage"></span>
+          </div>
+          <div>
+            <button id="stopButton">Stop</button>
+            <span class="status-label">Last Stop:</span>
+            <span id="responseMessage2"></span>
+          </div>
       </div>
     </div>
 
@@ -103,10 +114,16 @@
       <div class="section-title">Video</div>
       <img src="http://18.188.244.245:80/video_feed" width="100%" height="auto" />
       <div class="controls">
-        <button id="startButton2">Start</button>
-        <button id="stopButton2">Stop</button>
-        <p id="responseMessage3"></p>
-        <p id="responseMessage4"></p>
+          <div style="margin-bottom: 10px;">
+            <button id="startButton2">Start</button>
+            <span class="status-label">Last Start:</span>
+            <span id="responseMessage3"></span>
+          </div>
+          <div>
+            <button id="stopButton2">Stop</button>
+            <span class="status-label">Last Stop:</span>
+            <span id="responseMessage4"></span>
+          </div>
       </div>
     </div>
   </div>
@@ -114,17 +131,26 @@
   <!-- Radar -->
   <div class="radar-block">
     <div class="section-title">Radar</div>
-    <img id="radarImage" src="{% static 'radar_plot.png' %}?v={{ output }}" alt="Radar Plot" />
+    <img id="radarImage" src="{% static 'radar_plot.png' %}?v={{ output }}" alt="Radar Plot" style="width: 1000px; height: auto; border: 1px solid #ccc; border-radius: 8px;"/>
     <div class="status">Room State: <span id="radarRoomState">Unknown</span></div>
     <div class="controls">
-      <button id="refreshRoomStateButton">Refresh Room State</button>
-      <button id="refreshButton">Refresh Radar Image</button>
-      <button id="radarStartButton">Start</button>
-      <button id="radarStopButton">Stop</button>
+      <div style="margin-top: 10px;">
+        <button id="refreshRoomStateButton">Refresh Room State</button>
+        <button id="refreshButton">Refresh Radar Image</button>
+        <span class="status-label">Last Refresh:</span>
+        <span id="responseMessageRadar"></span>
+      </div>
+      <div style="margin-bottom: 10px;">
+        <button id="radarStartButton">Start</button>
+        <span class="status-label">Last Start:</span>
+        <span id="responseMessageRS"></span>
+      </div>
+      <div>
+        <button id="radarStopButton">Stop</button>
+        <span class="status-label">Last Stop:</span>
+        <span id="responseMessageRS2"></span>
+      </div>
     </div>
-    <p id="responseMessageRadar"></p>
-    <p id="responseMessageRS"></p>
-    <p id="responseMessageRS2"></p>
   </div>
 <script>
 let reloadInterval; // Variable to store interval ID
@@ -241,7 +267,7 @@ function fetchNewImageRadar() {
 }
 
 document.getElementById("radarStartButton").addEventListener("click", function() {
-    fetch('/stuff/start-button-radar/', {  // URL of the Django view
+    fetch('/stuff/start-radar-button/', {  // URL of the Django view
         method: 'GET',
     })
     .then(response => response.json()) // Expect JSON response
@@ -255,7 +281,7 @@ document.getElementById("radarStartButton").addEventListener("click", function()
     .catch(error => console.error('Error:', error));
 });
 document.getElementById("radarStopButton").addEventListener("click", function() {
-    fetch('/stuff/stop-button-radar/', {  // URL of the Django view
+    fetch('/stuff/stop-radar-button/', {  // URL of the Django view
         method: 'GET',
     })
     .then(response => response.json()) // Expect JSON response
