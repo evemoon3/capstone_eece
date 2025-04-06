@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.template import loader
 import requests
 
-server_start = "18.222.219.16"
+server_start = "18.188.244.245"
 
 
 def indexView(request):
@@ -23,6 +23,26 @@ def outputView(request):
         'output': output,
     }
     return HttpResponse(template.render(context, request))
+
+
+def plot_page(request):
+    template = loader.get_template('output.html')
+    # stop all things for first
+    url = f"http://{server_start}:80/set_start"
+    response1 = requests.post(url, json={"start": False})
+    url = f"http://{server_start}:80/set_start_video"
+    response2 = requests.post(url, json={"start": False})
+    url = f"http://{server_start}:80/set_start_radar"
+    response3 = requests.post(url, json={"start": False})
+    print(f"STARTING, {response1.status_code}, {response2.status_code}, {response3.status_code}")
+
+    output = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    context = {
+        'output': output,
+    }
+    return HttpResponse(template.render(context, request))
+
+
 
 
 def downloaded_file(request):
@@ -190,6 +210,21 @@ def start_video_button(request):
 def stop_video_button(request):
     print("SENDING STOP VIDEO REQ")
     server_url = f"http://{server_start}:80/set_start_video"
+    response = requests.post(server_url, json={"start": False})
+    print("Recieved: ", response.json())
+    return JsonResponse({"message": datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
+
+def start_radar_button(request):
+    print("SENDING START RADAR REQ")
+    server_url = f"http://{server_start}:80/set_start_radar"
+    response = requests.post(server_url, json={"start": True})
+    print("Recieved: ", response.json())
+    return JsonResponse({"message": datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
+
+
+def stop_radar_button(request):
+    print("SENDING STOP RADAR REQ")
+    server_url = f"http://{server_start}:80/set_start_radar"
     response = requests.post(server_url, json={"start": False})
     print("Recieved: ", response.json())
     return JsonResponse({"message": datetime.now().strftime('%Y-%m-%d %H:%M:%S')})

@@ -2,130 +2,23 @@
 <html>
 <head>
     {% load static %}
-  <title>Fire Sensor Server</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 40px;
-      background-color: #f9f9f9;
-      color: #333;
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
-    .section-title {
-      font-weight: bold;
-      margin-bottom: 10px;
-      font-size: 18px;
-    }
-
-    .flex-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 40px;
-      margin-bottom: 40px;
-    }
-
-    .block {
-      background: #fff;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      width: 48%;
-    }
-
-    .block img {
-      max-width: 100%;
-      border-radius: 8px;
-    }
-
-    .controls {
-      margin-top: 10px;
-    }
-
-    .controls button {
-      padding: 6px 12px;
-      margin-right: 8px;
-      margin-bottom: 8px;
-      border: none;
-      border-radius: 6px;
-      background-color: #007BFF;
-      color: white;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    .controls button:hover {
-      background-color: #0056b3;
-    }
-
-    .radar-block {
-      background: #fff;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-
-    .radar-block img {
-      max-width: 400px;
-      border-radius: 8px;
-      margin-bottom: 10px;
-    }
-
-    .status {
-      font-style: italic;
-      margin: 10px 0;
-    }
-  </style>
 </head>
 <body>
 
-  <h1>Fire Sensor Server</h1>
+<h1>Fire Sensor Server</h1>
+<div style="display: flex; gap: 40px; align-items: flex-start; margin-bottom: 40px;">
+<div>
+    <p>Point cloud</p>
+    <img id="pointCloudImage" src="{% static 'point_cloud_plot.png' %}?v={{ output }" alt="3D Point Cloud Plot" style="width: 400px; height: auto;"/>
+    <p> </p>
 
-  <div class="flex-row">
-    <!-- Point Cloud -->
-    <div class="block">
-      <div class="section-title">Point Cloud</div>
-      <img id="pointCloudImage" src="{% static 'point_cloud_plot.png' %}?v={{ output }}" alt="3D Point Cloud Plot" style="width: 400px; height: auto;"/>
-      <div class="controls">
-        <button id="startButton">Start</button>
-        <button id="stopButton">Stop</button>
-        <p id="responseMessage"></p>
-        <p id="responseMessage2"></p>
-      </div>
-    </div>
+    <button id="startButton">Start</button>
+    <p id="responseMessage"></p> <!-- To display any response -->
 
-    <!-- Video -->
-    <div class="block">
-      <div class="section-title">Video</div>
-      <img src="http://18.188.244.245:80/video_feed" width="100%" height="auto" />
-      <div class="controls">
-        <button id="startButton2">Start</button>
-        <button id="stopButton2">Stop</button>
-        <p id="responseMessage3"></p>
-        <p id="responseMessage4"></p>
-      </div>
-    </div>
-  </div>
+    <button id="stopButton">Stop</button>
+    <p id="responseMessage2"></p> <!-- To display any response -->
+</div>
 
-  <!-- Radar -->
-  <div class="radar-block">
-    <div class="section-title">Radar</div>
-    <img id="radarImage" src="{% static 'radar_plot.png' %}?v={{ output }}" alt="Radar Plot" />
-    <div class="status">Room State: <span id="radarRoomState">Unknown</span></div>
-    <div class="controls">
-      <button id="refreshRoomStateButton">Refresh Room State</button>
-      <button id="refreshButton">Refresh Radar Image</button>
-      <button id="radarStartButton">Start</button>
-      <button id="radarStopButton">Stop</button>
-    </div>
-    <p id="responseMessageRadar"></p>
-    <p id="responseMessageRS"></p>
-    <p id="responseMessageRS2"></p>
-  </div>
 <script>
 let reloadInterval; // Variable to store interval ID
 
@@ -174,6 +67,20 @@ document.getElementById("stopButton").addEventListener("click", function() {
     })
     .catch(error => console.error('Error:', error));
 });
+</script>
+<div>
+    <p>Video</p>
+    <img src="http://18.188.244.245:80/video_feed" width="848" height="480" />
+    <p> </p>
+    <button id="startButton2">Start</button>
+    <p id="responseMessage3"></p> <!-- To display any response -->
+
+    <button id="stopButton2">Stop</button>
+    <p id="responseMessage4"></p> <!-- To display any response -->
+</div>
+</div>
+
+<script>
 
 document.getElementById("startButton2").addEventListener("click", function() {
     fetch('/stuff/start-video-button/', {  // URL of the Django view
@@ -195,7 +102,19 @@ document.getElementById("stopButton2").addEventListener("click", function() {
     })
     .catch(error => console.error('Error:', error));
 });
-
+</script>
+<div>
+    <p>Radar</p>
+    <p></p>
+    <img id="radarImage" src="{% static 'radar_plot.png' %}?v={{ output }}" alt="Radar Plot" style="width: 400px; height: auto;"/>
+    <p> </p>
+    <p>Room State: <span id="radarRoomState">Unknown</span></p>
+    <button id="refreshRoomStateButton">Refresh Room State</button>
+    <p> </p>
+    <button id="refreshButton">Refresh Radar Image</button>
+    <p id="responseMessageRadar"></p>
+</div>
+<script>
 // refresh room state
 document.getElementById("refreshRoomStateButton").addEventListener("click", function() {
     fetch('/stuff/get-radar-room-state/', {
@@ -219,7 +138,14 @@ document.getElementById("refreshButton").addEventListener("click", function() {
     })
     .catch(error => console.error('Error:', error));
 });
+</script>
+<button id="radarStartButton">Start</button>
+<p id="responseMessageRS"></p> <!-- To display any response -->
 
+<button id="radarStopButton">Stop</button>
+<p id="responseMessageRS2"></p> <!-- To display any response -->
+
+<script>
 let reloadIntervalRadar; // Variable to store interval ID
 
 // Function to fetch the updated image URL from Django and update the image
@@ -270,3 +196,45 @@ document.getElementById("radarStopButton").addEventListener("click", function() 
 </script>
 </body>
 </html>
+
+
+<!--<h1>Fire Sensor Server</h1>-->
+<!--<div style="display: flex; gap: 40px; align-items: flex-start; margin-bottom: 40px;">-->
+<!--    <div>-->
+<!--        <p>Point cloud</p>-->
+<!--        <img id="pointCloudImage" src="{% static 'point_cloud_plot.png' %}?v={{ output }" alt="3D Point Cloud Plot" style="width: 400px; height: auto;"/>-->
+<!--        <p> </p>-->
+
+<!--        <button id="startButton">Start</button>-->
+<!--        <p id="responseMessage"></p> &lt;!&ndash; To display any response &ndash;&gt;-->
+
+<!--        <button id="stopButton">Stop</button>-->
+<!--        <p id="responseMessage2"></p> &lt;!&ndash; To display any response &ndash;&gt;-->
+<!--    </div>-->
+<!--        <div>-->
+<!--        <p>Video</p>-->
+<!--        <img src="http://18.188.244.245:80/video_feed" width="848" height="480" />-->
+<!--        <p> </p>-->
+<!--        <button id="startButton2">Start</button>-->
+<!--        <p id="responseMessage3"></p> &lt;!&ndash; To display any response &ndash;&gt;-->
+
+<!--        <button id="stopButton2">Stop</button>-->
+<!--        <p id="responseMessage4"></p> &lt;!&ndash; To display any response &ndash;&gt;-->
+<!--    </div>-->
+<!--</div>-->
+<!--<div>-->
+<!--    <p>Radar</p>-->
+<!--    <p></p>-->
+<!--    <img id="radarImage" src="{% static 'radar_plot.png' %}?v={{ output }}" alt="Radar Plot" style="width: 400px; height: auto;"/>-->
+<!--    <p> </p>-->
+<!--    <p>Room State: <span id="radarRoomState">Unknown</span></p>-->
+<!--    <button id="refreshRoomStateButton">Refresh Room State</button>-->
+<!--    <p> </p>-->
+<!--    <button id="refreshButton">Refresh Radar Image</button>-->
+<!--    <p id="responseMessageRadar"></p>-->
+<!--    <button id="radarStartButton">Start</button>-->
+<!--    <p id="responseMessageRS"></p> &lt;!&ndash; To display any response &ndash;&gt;-->
+
+<!--    <button id="radarStopButton">Stop</button>-->
+<!--    <p id="responseMessageRS2"></p> &lt;!&ndash; To display any response &ndash;&gt;-->
+<!--</div>-->
