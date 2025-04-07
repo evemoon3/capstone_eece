@@ -5,7 +5,8 @@ from django.http import HttpResponse, StreamingHttpResponse
 from django.template import loader
 import requests
 
-server_start = "3.145.119.119"
+server_ip = "3.145.119.119"
+server_start = f"https://{server_ip}:443" # 443 for https, 80 for http(local)
 
 
 def indexView(request):
@@ -15,7 +16,7 @@ def indexView(request):
 
 def outputView(request):
     template = loader.get_template('output.html')
-    server_url = f"http://{server_start}:80/get"
+    server_url = f"{server_start}/get"
     response = requests.get(server_url)
     print("Received number:", response.json())
     output = response.json()['numb_preset']
@@ -28,11 +29,11 @@ def outputView(request):
 def plot_page(request):
     template = loader.get_template('output.html')
     # stop all things for first
-    # url = f"http://{server_start}:80/set_start"
+    # url = f"{server_start}/set_start"
     # response1 = requests.post(url, json={"start": False})
-    # url = f"http://{server_start}:80/set_start_video"
+    # url = f"{server_start}/set_start_video"
     # response2 = requests.post(url, json={"start": False})
-    # url = f"http://{server_start}:80/set_start_radar"
+    # url = f"{server_start}/set_start_radar"
     # response3 = requests.post(url, json={"start": False})
     # print(f"STARTING, {response1.status_code}, {response2.status_code}, {response3.status_code}")
 
@@ -47,7 +48,7 @@ def plot_page(request):
 
 def downloaded_file(request):
     template = loader.get_template('output.html')
-    url = f"http://{server_start}:80/download/point_cloud.txt"
+    url = f"{server_start}/download/point_cloud.txt"
     response = requests.get(url)
     print(response.status_code)
 
@@ -185,7 +186,7 @@ from django.http import JsonResponse
 
 def start_button(request):
     print("SENDING START REQ")
-    server_url = f"http://{server_start}:80/set_start"
+    server_url = f"{server_start}/set_start"
     response = requests.post(server_url, json={"start": True})
     print("Recieved: ", response.json())
     return JsonResponse({"message": datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
@@ -193,7 +194,7 @@ def start_button(request):
 
 def stop_button(request):
     print("SENDING STOP REQ")
-    server_url = f"http://{server_start}:80/set_start"
+    server_url = f"{server_start}/set_start"
     response = requests.post(server_url, json={"start": False})
     print("Recieved: ", response.json())
     return JsonResponse({"message": datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
@@ -201,7 +202,7 @@ def stop_button(request):
 
 def start_video_button(request):
     print("SENDING START VIDEO REQ")
-    server_url = f"http://{server_start}:80/set_start_video"
+    server_url = f"{server_start}/set_start_video"
     response = requests.post(server_url, json={"start": True})
     print("Recieved: ", response.json())
     return JsonResponse({"message": datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
@@ -209,14 +210,14 @@ def start_video_button(request):
 
 def stop_video_button(request):
     print("SENDING STOP VIDEO REQ")
-    server_url = f"http://{server_start}:80/set_start_video"
+    server_url = f"{server_start}/set_start_video"
     response = requests.post(server_url, json={"start": False})
     print("Recieved: ", response.json())
     return JsonResponse({"message": datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
 
 def start_radar_button(request):
     print("SENDING START RADAR REQ")
-    server_url = f"http://{server_start}:80/set_start_radar"
+    server_url = f"{server_start}/set_start_radar"
     response = requests.post(server_url, json={"start": True})
     print("Recieved: ", response.json())
     return JsonResponse({"message": datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
@@ -224,14 +225,14 @@ def start_radar_button(request):
 
 def stop_radar_button(request):
     print("SENDING STOP RADAR REQ")
-    server_url = f"http://{server_start}:80/set_start_radar"
+    server_url = f"{server_start}/set_start_radar"
     response = requests.post(server_url, json={"start": False})
     print("Recieved: ", response.json())
     return JsonResponse({"message": datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
 
 
 def new_img(request):
-    url = f"http://{server_start}:80/download/point_cloud.txt"
+    url = f"{server_start}/download/point_cloud.txt"
     response = requests.get(url)
     print(response.status_code)
 
@@ -248,7 +249,7 @@ def new_img(request):
 
 def video_stream(request):
     template = loader.get_template('video_stuff.html')
-    url = "http://<YOUR_FLASK_SERVER_IP>:5000/video_feed"
+    url = f"{server_start}/video_feed"
     context = {
         'output': server_start,
     }
@@ -256,7 +257,7 @@ def video_stream(request):
 
 
 def radar_img(request):
-    url = f"http://{server_start}:80/download_img"
+    url = f"{server_start}/download_img"
     response = requests.get(url)
     print(response.status_code)
 
@@ -271,14 +272,14 @@ def radar_img(request):
 
 def get_radar_room_state(request):
     print("RADAR ROOM STATE")
-    server_url = f"http://{server_start}:80/is_radar_room"
+    server_url = f"{server_start}/is_radar_room"
     response = requests.get(server_url)
     print("Recieved: ", response.json())
     return JsonResponse({"message": response.json()["radar"]})
 
 
 def proxy_video_feed(request):
-    url = f"http://{server_start}:80/video_feed"
+    url = f"{server_start}/video_feed"
     r = requests.get(url, stream=True)
 
     return StreamingHttpResponse(r.iter_content(chunk_size=1024),
