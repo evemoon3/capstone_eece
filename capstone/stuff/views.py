@@ -44,6 +44,17 @@ def plot_page(request):
     return HttpResponse(template.render(context, request))
 
 
+def plot_page2(request):
+    # for when video is like nah
+    template = loader.get_template('vid_slow.html')
+
+    output = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    context = {
+        'output': output,
+    }
+    return HttpResponse(template.render(context, request))
+
+
 
 
 def downloaded_file(request):

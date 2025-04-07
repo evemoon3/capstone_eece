@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.indexView, name='stuff'),
     path('out/', views.outputView, name='out'),
     path('plot/', views.plot_page, name='plot'),
+    path('plot2/', views.plot_page2, name='plot2'),
     path('video/', views.video_stream, name="vid"),
     path('start-button/', views.start_button, name='start_button'),
     path('stop-button/', views.stop_button, name='stop_button'),
