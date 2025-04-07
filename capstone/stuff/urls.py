@@ -15,4 +15,5 @@ urlpatterns = [
     path('get-radar-room-state/', views.get_radar_room_state, name='get_radar_room_state'),
     path('start-radar-button/', views.start_video_button, name='start_radar_button'),
     path('stop-radar-button/', views.stop_video_button, name='stop_radar_button'),
+    path('video_feed/', views.proxy_video_feed, name='proxy_video_feed'),
 ]

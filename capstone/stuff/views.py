@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, StreamingHttpResponse
 from django.template import loader
 import requests
 
@@ -268,9 +268,19 @@ def radar_img(request):
         print("Error:", response.json())
     return JsonResponse({"message": datetime.now().strftime('%Y-%m-%d %H:%M:%S')})
 
+
 def get_radar_room_state(request):
     print("RADAR ROOM STATE")
     server_url = f"http://{server_start}:80/is_radar_room"
     response = requests.get(server_url)
     print("Recieved: ", response.json())
     return JsonResponse({"message": response.json()["radar"]})
+
+
+def proxy_video_feed(request):
+    url = f"http://{server_start}:80/video_feed"
+    r = requests.get(url, stream=True)
+
+    return StreamingHttpResponse(r.iter_content(chunk_size=1024),
+                                  content_type=r.headers['Content-Type'])
+
