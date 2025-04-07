@@ -28,13 +28,13 @@ def outputView(request):
 def plot_page(request):
     template = loader.get_template('output.html')
     # stop all things for first
-    url = f"http://{server_start}:80/set_start"
-    response1 = requests.post(url, json={"start": False})
-    url = f"http://{server_start}:80/set_start_video"
-    response2 = requests.post(url, json={"start": False})
-    url = f"http://{server_start}:80/set_start_radar"
-    response3 = requests.post(url, json={"start": False})
-    print(f"STARTING, {response1.status_code}, {response2.status_code}, {response3.status_code}")
+    # url = f"http://{server_start}:80/set_start"
+    # response1 = requests.post(url, json={"start": False})
+    # url = f"http://{server_start}:80/set_start_video"
+    # response2 = requests.post(url, json={"start": False})
+    # url = f"http://{server_start}:80/set_start_radar"
+    # response3 = requests.post(url, json={"start": False})
+    # print(f"STARTING, {response1.status_code}, {response2.status_code}, {response3.status_code}")
 
     output = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     context = {
