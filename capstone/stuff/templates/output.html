@@ -234,18 +234,6 @@ document.getElementById("refreshRoomStateButton").addEventListener("click", func
     .catch(error => console.error('Error:', error));
 });
 
-// refresh img
-document.getElementById("refreshButton").addEventListener("click", function() {
-    fetch('/stuff/get-radar-img/', {  // URL of the Django view
-        method: 'GET',
-    })
-    .then(response => response.json()) // Expect JSON response
-    .then(data => {
-        document.getElementById("responseMessageRadar").innerText = data.message; // Show response
-    })
-    .catch(error => console.error('Error:', error));
-});
-
 let reloadIntervalRadar; // Variable to store interval ID
 
 // Function to fetch the updated image URL from Django and update the image
@@ -265,6 +253,19 @@ function fetchNewImageRadar() {
         })
         .catch(error => console.error('Error fetching radar image:', error));
 }
+
+// refresh img
+document.getElementById("refreshButton").addEventListener("click", function() {
+    fetch('/stuff/get-radar-img/', {  // URL of the Django view
+        method: 'GET',
+    })
+    .then(response => response.json()) // Expect JSON response
+    .then(data => {
+        fetchNewImageRadar();
+        document.getElementById("responseMessageRadar").innerText = data.message; // Show response
+    })
+    .catch(error => console.error('Error:', error));
+});
 
 document.getElementById("radarStartButton").addEventListener("click", function() {
     fetch('/stuff/start-radar-button/', {  // URL of the Django view
