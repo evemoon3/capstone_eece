@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.template import loader
 import requests
 
-server_start = "18.188.244.245"
+server_start = "3.145.119.119"
 
 
 def indexView(request):
