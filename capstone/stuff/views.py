@@ -6,7 +6,7 @@ from django.template import loader
 import requests
 
 server_ip = "3.145.119.119"
-server_start = f"https://{server_ip}:443" # 443 for https, 80 for http(local)
+server_start = f"http://{server_ip}:80" # 443 for https, 80 for http(local)
 
 
 def indexView(request):
